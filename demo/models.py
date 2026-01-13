@@ -9,3 +9,6 @@ class Book(models.Model):
     cover = models.ImageField(upload_to='covers/', blank=True)
     is_published = models.BooleanField(default=False)
     #author = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.title
