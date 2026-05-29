@@ -3,4 +3,7 @@ from . import views
 
 urlpatterns = [
     path('api/', views.StudentAPI.as_view(), name="api"),
+    path('api/<int:id>/', views.StudentAPI.as_view(), name="apipatch"),
+    path('task/', views.TaskView.as_view(), name="taskview"),
+    path('task/<int:id>/', views.TaskViewByID.as_view(), name="taskviewbyid"),
 ]

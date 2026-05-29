@@ -7,4 +7,7 @@ class Student(models.Model):
 
     def __str__(self):
         return self.name
- 
+
+class Task(models.Model):
+    taskname = models.CharField(max_length=250)
+    description = models.TextField()
