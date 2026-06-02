@@ -50,18 +50,16 @@ class TaskView(APIView):
         else:
             return Response(new_task.errors)
 
-    def get(self, request):
-        all_task = Task.objects.all()
-        task_data = TaskSerializer(all_task, many=True)
-        return Response(task_data.data)
-
-class TaskViewByID(APIView):
-
-    def get(self, request, id):
-        get_task = Task.objects.get(id=id)
-        task_data = TaskSerializer(get_task)
-        return Response(task_data.data)
-
+    def get(self, request, id=None):
+        if id == None:
+            all_task = Task.objects.all()
+            task_data = TaskSerializer(all_task, many=True)
+            return Response(task_data.data)
+        else:
+            all_task = Task.objects.get(id=id)
+            task_data = TaskSerializer(all_task)
+            return Response(task_data.data)
+    
     def patch(self, request, id):
         task = Task.objects.get(id=id)
         update_task = TaskSerializer(task, data=request.data, partial=True)
@@ -84,3 +82,4 @@ class TaskViewByID(APIView):
         task = Task.objects.get(id=id)
         task.delete()
         return Response("Task Deleted")
+
