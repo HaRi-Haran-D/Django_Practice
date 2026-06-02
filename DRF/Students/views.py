@@ -1,7 +1,8 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .models import Student, Task
-from .serializers import TaskSerializer
+from .models import Student, Task, RankSheet
+from .serializers import TaskSerializer, RankSheetSerializer
+from django.shortcuts import render, get_object_or_404
 
 # Create your views here.
 class StudentAPI(APIView):
@@ -83,3 +84,75 @@ class TaskView(APIView):
         task.delete()
         return Response("Task Deleted")
 
+class RankSheetView(APIView):
+
+    def post(self, request):
+        total_marks = request.data['tamil'] + request.data['english'] + request.data['maths'] + request.data['science'] + request.data['social']
+        average_marks = total_marks/5
+
+        if (request.data['tamil']>=35) and (request.data['english']>=35) and (request.data['maths']>=35) and (request.data['science']>=35) and (request.data['social']>=35):
+            student_result = True
+        else:
+            student_result = False
+        new_data = RankSheet(tamil=request.data['tamil'],english=request.data['english'],maths=request.data['maths'],science=request.data['science'],social=request.data['social'], total = total_marks, average = average_marks, result = student_result)
+        new_data.save()
+        return Response("Data saved")
+
+    def get(self, request, id = None):
+        if id == None:
+            mark = RankSheet.objects.all()
+            serializer = RankSheetSerializer(mark, many=True)
+            return Response(serializer.data)
+        else:
+            mark = RankSheet.objects.get(id=id)
+            serializer = RankSheetSerializer(mark)
+            return Response(serializer.data)
+    
+    def put(self, request, id):
+        marksheet = RankSheet.objects.get(id=id)
+        total_marks = request.data['tamil'] + request.data['english'] + request.data['maths'] + request.data['science'] + request.data['social']
+        average_marks = total_marks/5
+
+        if (request.data['tamil']>=35) and (request.data['english']>=35) and (request.data['maths']>=35) and (request.data['science']>=35) and (request.data['social']>=35):
+            student_result = True
+        else:
+            student_result = False
+        
+        marksheet.tamil = request.data['tamil']
+        marksheet.english = request.data['english']
+        marksheet.maths = request.data['maths']
+        marksheet.science = request.data['science']
+        marksheet.social = request.data['social']
+        marksheet.total = total_marks
+        marksheet.average = average_marks
+        marksheet.result = student_result
+        marksheet.save()
+        
+        return Response("Data Updated")
+    
+    def patch(self, request, id):
+        marksheet = RankSheet.objects.get(id=id)
+        total_marks = request.data['tamil'] + request.data['english'] + request.data['maths'] + request.data['science'] + request.data['social']
+        average_marks = total_marks/5
+
+        if (request.data['tamil']>=35) and (request.data['english']>=35) and (request.data['maths']>=35) and (request.data['science']>=35) and (request.data['social']>=35):
+            student_result = True
+        else:
+            student_result = False
+        
+        marksheet.tamil = request.data['tamil']
+        marksheet.english = request.data['english']
+        marksheet.maths = request.data['maths']
+        marksheet.science = request.data['science']
+        marksheet.social = request.data['social']
+        marksheet.total = total_marks
+        marksheet.average = average_marks
+        marksheet.result = student_result
+        marksheet.save()
+        
+        return Response("Data Updated")
+
+    def delete(self, request, delete):
+        marksheet = get_object_or_404(RankSheet, id=id)
+        marksheet.delete()
+        return Response("Data Deleted")
