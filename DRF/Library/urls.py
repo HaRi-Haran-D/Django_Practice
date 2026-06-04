@@ -1,5 +1,6 @@
-from django.urls import path
+from django.urls import path, include
+from .router import library_router
 
 urlpatterns = [
-    # path('')
+    path('api/', include(library_router.urls)),
 ]

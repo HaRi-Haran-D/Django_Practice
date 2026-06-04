@@ -60,7 +60,7 @@ class TaskView(APIView):
             all_task = Task.objects.get(id=id)
             task_data = TaskSerializer(all_task)
             return Response(task_data.data)
-    
+
     def patch(self, request, id):
         task = Task.objects.get(id=id)
         update_task = TaskSerializer(task, data=request.data, partial=True)
@@ -78,11 +78,12 @@ class TaskView(APIView):
             return Response("Task Updated")
         else:
             return Response(update_task.errors)
-    
+
     def delete(self, request, id):
         task = Task.objects.get(id=id)
         task.delete()
         return Response("Task Deleted")
+
 
 class RankSheetView(APIView):
 
@@ -107,7 +108,7 @@ class RankSheetView(APIView):
             mark = RankSheet.objects.get(id=id)
             serializer = RankSheetSerializer(mark)
             return Response(serializer.data)
-    
+
     def put(self, request, id):
         marksheet = RankSheet.objects.get(id=id)
         total_marks = request.data['tamil'] + request.data['english'] + request.data['maths'] + request.data['science'] + request.data['social']
@@ -129,7 +130,7 @@ class RankSheetView(APIView):
         marksheet.save()
         
         return Response("Data Updated")
-    
+
     def patch(self, request, id):
         marksheet = RankSheet.objects.get(id=id)
         total_marks = request.data['tamil'] + request.data['english'] + request.data['maths'] + request.data['science'] + request.data['social']
