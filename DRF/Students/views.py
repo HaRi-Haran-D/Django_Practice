@@ -118,7 +118,7 @@ class RankSheetView(APIView):
             student_result = True
         else:
             student_result = False
-        
+
         marksheet.tamil = request.data['tamil']
         marksheet.english = request.data['english']
         marksheet.maths = request.data['maths']
@@ -128,7 +128,7 @@ class RankSheetView(APIView):
         marksheet.average = average_marks
         marksheet.result = student_result
         marksheet.save()
-        
+
         return Response("Data Updated")
 
     def patch(self, request, id):
@@ -140,7 +140,7 @@ class RankSheetView(APIView):
             student_result = True
         else:
             student_result = False
-        
+
         marksheet.tamil = request.data['tamil']
         marksheet.english = request.data['english']
         marksheet.maths = request.data['maths']
@@ -150,7 +150,7 @@ class RankSheetView(APIView):
         marksheet.average = average_marks
         marksheet.result = student_result
         marksheet.save()
-        
+
         return Response("Data Updated")
 
     def delete(self, request, delete):
