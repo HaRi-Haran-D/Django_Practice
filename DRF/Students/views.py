@@ -2,6 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import Student, Task, RankSheet
 from .serializers import TaskSerializer, RankSheetSerializer
+from rest_framework.decorators import api_view
 from django.shortcuts import render, get_object_or_404
 
 # Create your views here.
@@ -157,3 +158,46 @@ class RankSheetView(APIView):
         marksheet = get_object_or_404(RankSheet, id=id)
         marksheet.delete()
         return Response("Data Deleted")
+
+
+@api_view(["GET", "POST"])
+def task_list_create(request):
+
+    if request.method == "GET":
+        all_task = Task.objects.all()
+        serializer = TaskSerializer(all_task, many=True)
+        return Response(serializer.data)
+
+    elif request.method == "POST":
+        new_task = TaskSerializer(data=request.data)
+        if new_task.is_valid():
+            new_task.save()
+            return Response("New Task Added")
+        return Response(new_task.errors)
+
+
+@api_view(["GET", "PUT", "PATCH", "DELETE"])
+def task_update_delete(request, id):
+    task_data = Task.objects.get(id=id)
+
+    if request.method == "GET":
+        serializer = TaskSerializer(task_data)
+        return Response(serializer.data)
+
+    elif request.method == "PUT":
+        serializer = TaskSerializer(task_data, request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response("Task Updated")
+        return Response(serializer.errors)
+
+    elif request.method == "PATCH":
+        serializer = TaskSerializer(task_data, request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response("Task Updated")
+        return Response(serializer.errors)
+
+    elif request.method == "DELETE":
+        task_data.delete()
+        return Response("Task Deleted")

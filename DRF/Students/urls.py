@@ -10,4 +10,7 @@ urlpatterns = [
 
     path('rank/', views.RankSheetView.as_view()),
     path('rank/<int:id>/', views.RankSheetView.as_view()),
+
+    path('task/list/create/',views.task_list_create),
+    path('task/list/create/<int:id>/',views.task_update_delete),
 ]
