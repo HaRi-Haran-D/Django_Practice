@@ -5,6 +5,8 @@ from .views import *
 
 library_router = DefaultRouter()
 library_router.register(r'book', BookViewSet)
+
+
 urlpatterns = [
     path('api/', include(library_router.urls)),
     path('laptop/', LaptopView.as_view()),
