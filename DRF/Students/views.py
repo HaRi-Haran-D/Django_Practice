@@ -1,24 +1,35 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import Student, Task, RankSheet
-from .serializers import TaskSerializer, RankSheetSerializer
+from .serializers import *
 from rest_framework.decorators import api_view
 from django.shortcuts import render, get_object_or_404
 
 # Create your views here.
 class StudentAPI(APIView):
 
-    def get(self, request):
-        all_students = Student.objects.all()
-        stud_list = []
-        for i in all_students:
-            student_dict = {
-                "id": i.id,
-                "name": i.name,
-                "age": i.age,
-            }
-            stud_list.append(student_dict)
-        return Response(stud_list)
+    def get(self, request, id=None):
+
+        # all_students = Student.objects.all()
+        # stud_list = []
+        # for i in all_students:
+        #     student_dict = {
+        #         "id": i.id,
+        #         "name": i.name,
+        #         "age": i.age,
+        #     }
+        #     stud_list.append(student_dict)
+        # return Response(stud_list)
+
+        if id==None:
+            student= Student.objects.all()
+            serializer = StudentTaskSerializer(student, many=True)
+            return Response(serializer.data)
+        else:
+            student=Student.objects.get(id=id)
+            serializer = StudentTaskSerializer(student)
+            return Response(serializer.data)
+
 
     def post(self, request):
         print(request.data)
@@ -55,11 +66,11 @@ class TaskView(APIView):
     def get(self, request, id=None):
         if id == None:
             all_task = Task.objects.all()
-            task_data = TaskSerializer(all_task, many=True)
+            task_data = TaskDataSerializer(all_task, many=True)
             return Response(task_data.data)
         else:
             all_task = Task.objects.get(id=id)
-            task_data = TaskSerializer(all_task)
+            task_data = TaskDataSerializer(all_task)
             return Response(task_data.data)
 
     def patch(self, request, id):
@@ -158,6 +169,8 @@ class RankSheetView(APIView):
         marksheet = get_object_or_404(RankSheet, id=id)
         marksheet.delete()
         return Response("Data Deleted")
+
+
 
 
 @api_view(["GET", "POST"])
