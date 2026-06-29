@@ -32,10 +32,13 @@ class StudentAPI(APIView):
 
 
     def post(self, request):
-        print(request.data)
-        new = Student(name= request.data['name'], age=request.data['age'])
-        new.save()
-        return Response("New Student Created")
+        # print(request.data)
+        # new = Student(name= request.data['name'], age=request.data['age'])
+        # new.save()
+        # return Response("New Student Created")
+
+        new_task = Task(student_ref=request.data['student_ref'])
+        task_name = request.data['task_name'],
 
     def patch(self, request, id):
         student_data = Student.objects.filter(id=id)
@@ -51,6 +54,8 @@ class StudentAPI(APIView):
         student_data = Student.objects.get(id=id)
         student_data.delete()
         return Response("Student Data Deleted")
+
+
 
 
 class TaskView(APIView):
@@ -95,6 +100,9 @@ class TaskView(APIView):
         task = Task.objects.get(id=id)
         task.delete()
         return Response("Task Deleted")
+
+
+
 
 
 class RankSheetView(APIView):

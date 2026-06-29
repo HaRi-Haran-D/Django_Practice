@@ -20,7 +20,7 @@ class RankSheetSerializer(ModelSerializer):
 
 
 class StudentTaskSerializer(ModelSerializer):
-    all_task = TaskSerializer()
+    all_task = TaskSerializer(many=True)
     class Meta:
         model = Student
         fields = '__all__'
