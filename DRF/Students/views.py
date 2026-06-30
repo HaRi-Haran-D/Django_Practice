@@ -32,13 +32,11 @@ class StudentAPI(APIView):
 
 
     def post(self, request):
-        # print(request.data)
-        # new = Student(name= request.data['name'], age=request.data['age'])
-        # new.save()
-        # return Response("New Student Created")
+        print(request.data)
+        new = Student(name= request.data['name'], age=request.data['age'])
+        new.save()
+        return Response("New Student Created")
 
-        new_task = Task(student_ref=request.data['student_ref'])
-        task_name = request.data['task_name'],
 
     def patch(self, request, id):
         student_data = Student.objects.filter(id=id)
@@ -61,12 +59,18 @@ class StudentAPI(APIView):
 class TaskView(APIView):
 
     def post(self, request):
-        new_task = TaskSerializer(data=request.data)
-        if new_task.is_valid():
-            new_task.save()
-            return Response("New Task Added")
-        else:
-            return Response(new_task.errors)
+        # new_task = TaskSerializer(data=request.data)
+        # if new_task.is_valid():
+        #     new_task.save()
+        #     return Response("New Task Added")
+        # else:
+        #     return Response(new_task.errors)
+
+        new_task = Task(student_ref_id=request.data['student_ref'], taskname = request.data['taskname'], description= request.data['description'],)
+        new_task.save()
+        return Response('Task Created')
+
+
 
     def get(self, request, id=None):
         if id == None:
